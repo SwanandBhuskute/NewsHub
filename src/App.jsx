@@ -1,16 +1,23 @@
 import React, { Suspense } from 'react';
 import { RouterProvider } from "react-router-dom";
 import router from './routes/index';
+import Navbar from './Navbar';
 
 const App = () => {
   return (
-    <Suspense fallback={<>Loading...</>}>
-        <RouterProvider router={router} />
-    </Suspense>
+    <>
+      <Navbar /> 
+      <div style={{ marginTop: '60px' }}>
+        <Suspense fallback={<>Loading...</>}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </div>
+    </>
   );
 };
 
 export default App;
+
 
 
 
