@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ArticleList from '../Articles/ArticlesList';
 import { API_ENDPOINT, API_KEY } from '../config/constants';
+import ArticleList from '../Articles/ArticlesList';
 
 const Topheadlines = () => {
   const [articles, setArticles] = useState([]);
@@ -11,8 +10,12 @@ const Topheadlines = () => {
   useEffect(() => {
     const fetchSources = async () => {
       try {
-        const response = await axios.get(`${API_ENDPOINT}/top-headlines/sources?apiKey=${API_KEY}`);
-        setSources(response.data.sources);
+        const response = await fetch(`${API_ENDPOINT}/top-headlines/sources?apiKey=${API_KEY}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch sources');
+        }
+        const data = await response.json();
+        setSources(data.sources);
       } catch (error) {
         console.error('Error fetching sources:', error);
       }
@@ -23,8 +26,12 @@ const Topheadlines = () => {
 
   const fetchTopHeadlines = async () => {
     try {
-      const response = await axios.get(`${API_ENDPOINT}/top-headlines?sources=${selectedSource}&apiKey=${API_KEY}`);
-      setArticles(response.data.articles);
+      const response = await fetch(`${API_ENDPOINT}/top-headlines?sources=${selectedSource}&apiKey=${API_KEY}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch top headlines');
+      }
+      const data = await response.json();
+      setArticles(data.articles);
     } catch (error) {
       console.error('Error fetching top headlines:', error);
     }
@@ -50,12 +57,12 @@ const Topheadlines = () => {
             <option key={source.id} value={source.id} className='hover:bg-gray-700 hover:text-gray-200'>{source.name}</option>
           ))}
         </select>
-        </div>
-        {selectedSource && (
-          <p className="text-xl m-2 font-semibold">
-            Top headlines from {selectedSource}
-          </p>
-        )}
+      </div>
+      {selectedSource && (
+        <p className="text-xl m-2 font-semibold">
+          Top headlines from {selectedSource}
+        </p>
+      )}
       <ArticleList articles={articles} />
     </div>
   );

@@ -40,15 +40,20 @@ const Articles = () => {
         if (selectedCategory) {
           url += `&category=${selectedCategory}`;
         }
-        const response = await axios.get(url);
-        setArticles(response.data.articles);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setArticles(data.articles);
       } catch (error) {
         console.error('Error fetching articles:', error);
       }
     };
-
+  
     fetchArticles();
   }, [country, selectedCategory]);
+  
 
   const handleCountryChange = (e) => {
     setCountry(e.target.value);
