@@ -7,7 +7,7 @@
 `gh repo clone SwanandBhuskute/NewsHub` <br> `https://github.com/SwanandBhuskute/NewsHub.git`
 
 ## Start the server
-`nmp run dev` 
+`npm run dev` 
 
 
 
